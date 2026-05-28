@@ -456,12 +456,10 @@
         <span class="sec-label-line"></span>
         <span class="sec-label-count" id="links-label-count">Loading…</span>
       </div>
-      <div id="links-list" class="links-list">
-        <div style="padding:10px 0">
-          <div class="skel" style="width:90%;margin-bottom:8px"></div>
-          <div class="skel" style="width:70%;margin-bottom:8px"></div>
-          <div class="skel" style="width:80%"></div>
-        </div>
+      <div id="links-list" class="hot-tags" style="padding-top:12px">
+        <div class="skel" style="width:70px;height:26px;border-radius:2px;display:inline-block;margin:4px 4px 4px 0"></div>
+        <div class="skel" style="width:90px;height:26px;border-radius:2px;display:inline-block;margin:4px 4px 4px 0"></div>
+        <div class="skel" style="width:60px;height:26px;border-radius:2px;display:inline-block;margin:4px 4px 4px 0"></div>
       </div>
     </div>
 
@@ -650,19 +648,14 @@ function renderLinksDOM(links, isFresh) {
   }
   list.innerHTML = links.map((l, i) => {
     const href  = l.short_url || l.shortUrl || l.url || l.link || '#';
-    const label = l.title || l.name || l.keyword || href;
-    return `
-    <div class="news-item">
-      <div class="news-num">${i+1}</div>
-      <div class="news-body">
-        <a href="${esc(href)}" target="_blank" rel="noopener"
-           style="color:var(--text);text-decoration:none;font-family:var(--body);font-size:14px;font-weight:600;line-height:1.4;display:block"
-           onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text)'">
-          ${esc(label)}
-        </a>
-        <div style="font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--body)">${esc(href)}</div>
-      </div>
-    </div>`;
+    const label = l.title || l.name || l.keyword || ('Link ' + (i + 1));
+    const isHot = i < 2;
+    return `<a href="${esc(href)}" target="_blank" rel="noopener"
+      class="tag${isHot ? ' hot' : ''}"
+      style="text-decoration:none;cursor:pointer;"
+      onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+      ${esc(label)}
+    </a>`;
   }).join('');
   const lbl = document.getElementById('links-label-count');
   if (lbl) lbl.textContent = links.length + ' links';
