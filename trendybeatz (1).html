@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendyBeatz – Latest Nigerian Music, Videos & Entertainment News</title>
+  <meta name="description" content="TrendyBeatz – Your #1 source for the hottest Nigerian music downloads, Afrobeats, Amapiano, videos and entertainment gist. Updated every 5 minutes.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta http-equiv="refresh" content="300">
+  <meta name="revisit-after" content="5 minutes">
+  <link rel="canonical" href="https://trendybeatz.com/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --bg2:      #161616;
+      --bg3:      #1e1e1e;
+      --surface:  #242424;
+      --border:   #2e2e2e;
+      --text:     #f0f0f0;
+      --text2:    #aaaaaa;
+      --text3:    #666666;
+      --green:    #00e676;
+      --green2:   #00c853;
+      --yellow:   #ffd600;
+      --red:      #ff1744;
+      --display:  'Bebas Neue', Impact, sans-serif;
+      --condensed:'Barlow Condensed', 'Arial Narrow', sans-serif;
+      --body:     'Barlow', Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: var(--green);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .ticker-label {
+      background: #000;
+      color: var(--green);
+      font-family: var(--condensed);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 0 14px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ticker-track { overflow: hidden; flex: 1; }
+    .ticker-inner {
+      display: flex;
+      gap: 50px;
+      white-space: nowrap;
+      animation: tickScroll 60s linear infinite;
+    }
+    @keyframes tickScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .ticker-inner span {
+      color: #000;
+      font-family: var(--body);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .ticker-divider { color: rgba(0,0,0,.4); font-size: 10px; }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--bg);
+      border-bottom: 3px solid var(--green);
+      padding: 0 20px;
+    }
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+    .logo-wrap {}
+    .logo-name {
+      font-family: var(--display);
+      font-size: clamp(28px, 5vw, 46px);
+      letter-spacing: .02em;
+      line-height: 1;
+      color: var(--text);
+    }
+    .logo-name span { color: var(--green); }
+    .logo-tagline {
+      font-family: var(--body);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .header-meta {
+      text-align: right;
+    }
+    .header-date {
+      font-family: var(--body);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--red);
+      color: #fff;
+      font-family: var(--condensed);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #fff;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
+
+    /* ── NAV STRIP ── */
+    .nav-strip {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 20px;
+      overflow-x: auto;
+    }
+    .nav-link {
+      font-family: var(--condensed);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text2);
+      padding: 10px 14px;
+      text-decoration: none;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--green);
+      border-bottom-color: var(--green);
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .status-inner { max-width: 1080px; margin: 0 auto; width: 100%; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .stat-pill {
+      font-family: var(--body);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: .04em;
+    }
+    .stat-pill strong { color: var(--green); font-weight: 700; }
+    .stat-pill .cdown { color: var(--yellow); font-weight: 700; }
+    .stat-sep { color: var(--border); }
+
+    /* ── MAIN LAYOUT ── */
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 20px 50px;
+    }
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 0 28px;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .columns { grid-template-columns: 1fr; }
+    }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 0 10px;
+      border-bottom: 2px solid var(--green);
+      margin-bottom: 0;
+    }
+    .sec-label-icon { font-size: 14px; }
+    .sec-label-text {
+      font-family: var(--condensed);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .sec-label-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label-count {
+      font-family: var(--body);
+      font-size: 10px;
+      color: var(--text3);
+    }
+
+    /* ── NEWS LIST ── */
+    .news-list { display: flex; flex-direction: column; }
+
+    .news-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 0 12px;
+      align-items: start;
+    }
+    .news-num {
+      font-family: var(--display);
+      font-size: 38px;
+      color: var(--surface);
+      line-height: 1;
+      padding-top: 2px;
+      user-select: none;
+    }
+    .news-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .news-source {
+      font-family: var(--condensed);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .news-age {
+      font-family: var(--body);
+      font-size: 9px;
+      color: var(--text3);
+    }
+    .news-sep { color: var(--border); font-size: 9px; }
+
+    .news-headline {
+      font-family: var(--condensed);
+      font-size: clamp(15px, 2.4vw, 20px);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text);
+      display: block;
+      cursor: default;
+      user-select: text;
+      letter-spacing: .01em;
+    }
+    .news-desc {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--text3);
+      line-height: 1.5;
+      margin-top: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-style: italic;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {}
+    .links-list {
+      line-height: 2.5;
+      word-spacing: 1px;
+      padding-top: 4px;
+    }
+    .link-item { display: inline; }
+    .link-item a {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--text2);
+      text-decoration: none;
+      margin-right: 5px;
+    }
+    .link-item a:hover { color: var(--green); text-decoration: underline; }
+    .link-item a:visited { color: var(--text3); }
+
+    /* ── HOT TAGS ── */
+    .hot-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .tag {
+      background: var(--surface);
+      color: var(--text2);
+      font-family: var(--condensed);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+    }
+    .tag.hot { background: var(--green); color: #000; border-color: var(--green); }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 0 0;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--body);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: .04em;
+      margin-top: 24px;
+    }
+    .site-footer a { color: var(--green); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+
+    /* ── SKELETON ── */
+    .skel {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--bg3) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+      border-radius: 2px;
+      height: 14px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    @keyframes slideIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
+    .news-item.fresh { animation: slideIn .4s ease-out; }
+
+    /* ── CATEGORY BADGE ── */
+    .cat-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: #000;
+      font-family: var(--condensed);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 1px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">🔥 Trending</div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="ticker-inner">
+      <span>Loading hottest music updates…</span>
+      <span class="ticker-divider"> ◆ </span>
+      <span>Loading hottest music updates…</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-name">Trendy<span>Beatz</span></div>
+      <div class="logo-tagline">Nigeria's Hottest Music &amp; Entertainment Hub</div>
+    </div>
+    <div class="header-meta">
+      <div class="header-date" id="hd-date">——</div>
+      <div class="live-badge"><span class="live-dot"></span> Live Feed</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-strip">
+  <div class="nav-inner">
+    <a class="nav-link active" href="#">Music</a>
+    <a class="nav-link" href="#">Videos</a>
+    <a class="nav-link" href="#">Afrobeats</a>
+    <a class="nav-link" href="#">Amapiano</a>
+    <a class="nav-link" href="#">Albums</a>
+    <a class="nav-link" href="#">Gospel</a>
+    <a class="nav-link" href="#">Lyrics</a>
+    <a class="nav-link" href="#">Entertainment</a>
+    <a class="nav-link" href="#">Contact</a>
+  </div>
+</div>
+
+<!-- STATUS -->
+<div class="status-bar">
+  <div class="status-inner">
+    <div class="stat-pill">Stories: <strong id="st-hcount">—</strong></div>
+    <span class="stat-sep">|</span>
+    <div class="stat-pill">Links: <strong id="st-lcount">—</strong></div>
+    <span class="stat-sep">|</span>
+    <div class="stat-pill">Next refresh: <span class="cdown" id="st-countdown">5:00</span></div>
+    <span class="stat-sep">|</span>
+    <div class="stat-pill">Updated: <strong id="st-updated">—</strong></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="wrap">
+  <div class="columns">
+
+    <!-- NEWS FEED -->
+    <div class="main-col">
+      <div class="sec-label">
+        <span class="sec-label-icon">🎵</span>
+        <span class="sec-label-text">Latest Music News</span>
+        <span class="sec-label-line"></span>
+        <span class="sec-label-count" id="news-label-count">Loading…</span>
+      </div>
+      <div id="news-list" itemscope itemtype="https://schema.org/ItemList">
+        <!-- seeded by inline script -->
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Hot Tags -->
+      <div class="sec-label" style="margin-bottom:12px">
+        <span class="sec-label-icon">🏷️</span>
+        <span class="sec-label-text">Hot Tags</span>
+      </div>
+      <div class="hot-tags" style="margin-bottom:20px">
+        <span class="tag hot">Afrobeats</span>
+        <span class="tag hot">Amapiano</span>
+        <span class="tag">Burna Boy</span>
+        <span class="tag">Asake</span>
+        <span class="tag">Davido</span>
+        <span class="tag">Wizkid</span>
+        <span class="tag">Rema</span>
+        <span class="tag">Fireboy</span>
+        <span class="tag">Omah Lay</span>
+        <span class="tag">Gospel</span>
+        <span class="tag">Naira Marley</span>
+        <span class="tag">Olamide</span>
+      </div>
+
+      <!-- Links -->
+      <div class="sec-label" style="margin-bottom:8px">
+        <span class="sec-label-icon">🔗</span>
+        <span class="sec-label-text">Latest Links</span>
+        <span class="sec-label-line"></span>
+        <span class="sec-label-count" id="links-label-count">—</span>
+      </div>
+      <div id="links-list" class="links-list">
+        <div style="padding:10px 0">
+          <div class="skel" style="width:90%;margin-bottom:8px"></div>
+          <div class="skel" style="width:70%;margin-bottom:8px"></div>
+          <div class="skel" style="width:80%"></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <div class="site-footer">
+    <span>
+      © 2025 <a href="https://trendybeatz.com/">TrendyBeatz.com</a>
+      &nbsp;·&nbsp;
+      <a href="#">Privacy</a>
+      &nbsp;·&nbsp;
+      <a href="#">DMCA</a>
+      &nbsp;·&nbsp;
+      <a href="#">Contact</a>
+    </span>
+    <span id="ft-ts">Auto-refreshes every 5 min</span>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const REFRESH_SEC = 300;
+const ALLORIGINS  = 'https://api.allorigins.win/get?url=';
+const LINKS_API   = 'https://flexygist.com.ng/ads.php?output=json&limit=500';
+
+const RSS_FEEDS = [
+  { url: 'https://www.trendybeatz.com/feed',               name: 'TrendyBeatz'   },
+  { url: 'https://www.bellanaija.com/feed/',                name: 'BellaNaija'    },
+  { url: 'https://www.vanguardngr.com/entertainment/feed/', name: 'Vanguard'      },
+  { url: 'https://www.pulse.ng/entertainment/rss',          name: 'Pulse NG'      },
+  { url: 'https://notjustok.com/feed/',                     name: 'NotJustOk'     },
+  { url: 'https://www.tooxclusive.com/feed/',               name: 'TooXclusive'   },
+];
+
+// ══════════════════════════════════════════
+//  SEED — skeleton only, no hardcoded links
+// ══════════════════════════════════════════
+(function renderSeed() {
+  const list = document.getElementById('news-list');
+  if (list) {
+    list.innerHTML = [1,2,3,4,5].map(i => `
+      <div class="news-item">
+        <div class="news-num" style="color:var(--surface)">${i}</div>
+        <div class="news-body">
+          <div class="skel" style="width:38%;height:9px;margin-bottom:8px"></div>
+          <div class="skel" style="width:${80 + (i%3)*7}%;height:16px;margin-bottom:6px"></div>
+          <div class="skel" style="width:65%;height:11px"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+  // Links sidebar shows skeleton until ads.php responds
+  const linksList = document.getElementById('links-list');
+  if (linksList) {
+    linksList.innerHTML = `<div style="padding:10px 0">
+      <div class="skel" style="width:90%;margin-bottom:8px"></div>
+      <div class="skel" style="width:70%;margin-bottom:8px"></div>
+      <div class="skel" style="width:80%"></div>
+    </div>`;
+  }
+})();
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function relTime(ms) {
+  const m = Math.floor(ms/60000);
+  if (m < 1)  return 'just now';
+  if (m < 60) return m + 'm ago';
+  return Math.floor(m/60) + 'h ago';
+}
+
+// ══════════════════════════════════════════
+//  RSS FETCH
+// ══════════════════════════════════════════
+async function fetchViaRss2Json(feedUrl) {
+  try {
+    // Use allorigins proxy — no rate limit, no API key needed
+    const proxyUrl = ALLORIGINS + encodeURIComponent(feedUrl) + '&_=' + Date.now();
+    const r = await fetch(proxyUrl);
+    if (!r.ok) return null;
+    const j = await r.json();
+    if (!j.contents) return null;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(j.contents, 'text/xml');
+    const entries = [...doc.querySelectorAll('item, entry')];
+    if (!entries.length) return null;
+    return entries.map(el => {
+      const getText = (tag) => el.querySelector(tag)?.textContent?.trim() || '';
+      const getAttr = (tag, attr) => el.querySelector(tag)?.getAttribute(attr) || '';
+      const title = getText('title');
+      const link  = getText('link') || getAttr('link', 'href') || getText('guid');
+      const desc  = getText('description') || getText('summary') || getText('content') || '';
+      const pub   = getText('pubDate') || getText('published') || getText('updated') || '';
+      return { title, link, guid: link, description: desc, pubDate: pub };
+    }).filter(i => i.title);
+  } catch(e) { return null; }
+}
+
+function parseItems(items, source, maxAge) {
+  return (items||[]).map(item => {
+    const title = item.title?.trim() || '';
+    const link  = item.link?.trim() || item.guid || '#';
+    const desc  = (item.description || item.content || '').replace(/<[^>]+>/g,'').trim().slice(0,160);
+    const pub   = item.pubDate ? new Date(item.pubDate) : new Date();
+    const ageMs = Date.now() - pub.getTime();
+    return { title, url: link, desc, ageMs, source };
+  }).filter(i => i.title && i.ageMs < maxAge);
+}
+
+// ══════════════════════════════════════════
+//  DOM RENDERERS
+// ══════════════════════════════════════════
+function renderNewsDOM(items, isFresh) {
+  const list = document.getElementById('news-list');
+  if (!list) return;
+  if (!items.length) {
+    list.innerHTML = `<p style="font-family:var(--body);font-size:13px;color:var(--text3);padding:20px 0;font-style:italic">No recent stories. Retrying…</p>`;
+    return;
+  }
+  list.innerHTML = items.map((item, i) => `
+    <div class="news-item${isFresh && i < 3 ? ' fresh' : ''}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <meta itemprop="position" content="${i+1}">
+      <div class="news-num">${i+1}</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-source">${esc(item.source?.name || item.source || '')}</span>
+          ${item.ageMs != null ? `<span class="news-sep">·</span><span class="news-age">${relTime(item.ageMs)}</span>` : ''}
+        </div>
+        <span class="news-headline" itemprop="name">${esc(item.title)}</span>
+        ${item.desc ? `<div class="news-desc">${esc(item.desc)}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  const lbl = document.getElementById('news-label-count');
+  if (lbl) lbl.textContent = items.length + ' stories';
+  const sc = document.getElementById('st-hcount');
+  if (sc) sc.textContent = items.length;
+
+  updateTicker(items);
+}
+
+function renderLinksDOM(links, isFresh) {
+  const list = document.getElementById('links-list');
+  if (!list) return;
+  if (!links.length) {
+    list.innerHTML = `<p style="font-size:12px;color:var(--text3);padding:10px 0;font-style:italic">No links yet.</p>`;
+    return;
+  }
+  list.innerHTML = links.map(l => `
+    <div class="link-item">
+      <a href="${esc(l.short_url || l.url)}" target="_blank" rel="noopener" title="${esc(l.url||l.title)}">${esc(l.title)}</a>
+    </div>
+  `).join('');
+  const lbl = document.getElementById('links-label-count');
+  if (lbl) lbl.textContent = links.length + ' links';
+  const sc = document.getElementById('st-lcount');
+  if (sc) sc.textContent = links.length;
+}
+
+// ══════════════════════════════════════════
+//  TICKER
+// ══════════════════════════════════════════
+function updateTicker(items) {
+  const el = document.getElementById('ticker-inner');
+  if (!el || !items.length) return;
+  const doubled = [...items, ...items];
+  el.innerHTML = doubled.map((item, i) =>
+    `<span>${esc(item.title)}</span>` +
+    (i < doubled.length - 1 ? '<span class="ticker-divider"> ◆ </span>' : '')
+  ).join('');
+}
+
+// ══════════════════════════════════════════
+//  LOAD NEWS
+// ══════════════════════════════════════════
+async function loadNews(isFresh) {
+  try {
+    const results = await Promise.allSettled(
+      RSS_FEEDS.map(feed =>
+        fetchViaRss2Json(feed.url)
+          .then(items => items ? parseItems(items, feed, 24*60*60*1000) : [])
+          .catch(() => [])
+      )
+    );
+    let items = results.filter(r => r.status==='fulfilled').flatMap(r => r.value)
+      .sort((a,b) => a.ageMs - b.ageMs).slice(0,5);
+
+    if (items.length < 3) {
+      const r2 = await Promise.allSettled(
+        RSS_FEEDS.map(feed =>
+          fetchViaRss2Json(feed.url)
+            .then(items => items ? parseItems(items, feed, 6*60*60*1000) : [])
+            .catch(() => [])
+        )
+      );
+      items = r2.filter(r => r.status==='fulfilled').flatMap(r => r.value)
+        .sort((a,b) => a.ageMs - b.ageMs).slice(0,5);
+    }
+    if (items.length) renderNewsDOM(items, isFresh);
+  } catch(e) { console.warn('News fetch error:', e); }
+}
+
+// ══════════════════════════════════════════
+//  CLOCK
+// ══════════════════════════════════════════
+function updateClock() {
+  const now = new Date();
+  const de  = document.getElementById('hd-date');
+  const ft  = document.getElementById('ft-ts');
+  if (de) de.textContent = now.toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  if (ft) ft.textContent = 'Auto-refreshes every 5 min · ' + now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ══════════════════════════════════════════
+//  COUNTDOWN + REFRESH
+// ══════════════════════════════════════════
+let countdown = REFRESH_SEC;
+let cdTimer;
+
+function startCountdown() {
+  clearInterval(cdTimer);
+  countdown = REFRESH_SEC;
+  cdTimer = setInterval(() => {
+    countdown--;
+    const el = document.getElementById('st-countdown');
+    if (el) {
+      const m = Math.floor(countdown/60);
+      const s = countdown%60;
+      el.textContent = m + ':' + String(s).padStart(2,'0');
+    }
+    if (countdown <= 0) { clearInterval(cdTimer); refreshAll(true); }
+  }, 1000);
+}
+
+async function loadLinks(isFresh) {
+  try {
+    const res   = await fetch(LINKS_API + '&_=' + Date.now());
+    const data  = await res.json();
+    const links = data.links || [];
+    if (links.length) renderLinksDOM(links, isFresh);
+  } catch(e) {
+    console.warn('Links fetch error:', e);
+    // sidebar stays as skeleton — no hardcoded fallback
+  }
+}
+
+async function refreshAll(isFresh) {
+  const el = document.getElementById('st-updated');
+  if (el) el.textContent = new Date().toLocaleTimeString();
+  await Promise.all([loadNews(isFresh), loadLinks(isFresh)]);
+  startCountdown();
+}
+
+refreshAll(false);
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') refreshAll(true);
+});
+</script>
+
+</body>
+</html>
