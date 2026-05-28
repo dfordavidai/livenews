@@ -436,8 +436,6 @@
 <!-- STATUS -->
 <div class="status-bar">
   <div class="status-inner">
-    <div class="stat-pill">Stories: <strong id="st-hcount">—</strong></div>
-    <span class="stat-sep">|</span>
     <div class="stat-pill">Links: <strong id="st-lcount">—</strong></div>
     <span class="stat-sep">|</span>
     <div class="stat-pill">Next refresh: <span class="cdown" id="st-countdown">5:00</span></div>
@@ -450,16 +448,20 @@
 <div class="wrap">
   <div class="columns">
 
-    <!-- NEWS FEED -->
+    <!-- LINKS FEED (main column) -->
     <div class="main-col">
       <div class="sec-label">
-        <span class="sec-label-icon">🎵</span>
-        <span class="sec-label-text">Latest Music News</span>
+        <span class="sec-label-icon">🔗</span>
+        <span class="sec-label-text">Latest Links</span>
         <span class="sec-label-line"></span>
-        <span class="sec-label-count" id="news-label-count">Loading…</span>
+        <span class="sec-label-count" id="links-label-count">Loading…</span>
       </div>
-      <div id="news-list" itemscope itemtype="https://schema.org/ItemList">
-        <!-- seeded by inline script -->
+      <div id="links-list" class="links-list">
+        <div style="padding:10px 0">
+          <div class="skel" style="width:90%;margin-bottom:8px"></div>
+          <div class="skel" style="width:70%;margin-bottom:8px"></div>
+          <div class="skel" style="width:80%"></div>
+        </div>
       </div>
     </div>
 
@@ -486,20 +488,6 @@
         <span class="tag">Olamide</span>
       </div>
 
-      <!-- Links -->
-      <div class="sec-label" style="margin-bottom:8px">
-        <span class="sec-label-icon">🔗</span>
-        <span class="sec-label-text">Latest Links</span>
-        <span class="sec-label-line"></span>
-        <span class="sec-label-count" id="links-label-count">—</span>
-      </div>
-      <div id="links-list" class="links-list">
-        <div style="padding:10px 0">
-          <div class="skel" style="width:90%;margin-bottom:8px"></div>
-          <div class="skel" style="width:70%;margin-bottom:8px"></div>
-          <div class="skel" style="width:80%"></div>
-        </div>
-      </div>
     </aside>
 
   </div>
@@ -523,8 +511,14 @@
 //  CONFIG
 // ══════════════════════════════════════════
 const REFRESH_SEC = 300;
-const ALLORIGINS  = 'https://api.allorigins.win/get?url=';
 const LINKS_API   = 'https://flexygist.com.ng/ads.php?output=json&limit=500';
+
+// Multiple CORS proxies — tried in order until one works
+const CORS_PROXIES = [
+  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&_=${Date.now()}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+];
 
 const RSS_FEEDS = [
   { url: 'https://www.trendybeatz.com/feed',               name: 'TrendyBeatz'   },
@@ -538,30 +532,7 @@ const RSS_FEEDS = [
 // ══════════════════════════════════════════
 //  SEED — skeleton only, no hardcoded links
 // ══════════════════════════════════════════
-(function renderSeed() {
-  const list = document.getElementById('news-list');
-  if (list) {
-    list.innerHTML = [1,2,3,4,5].map(i => `
-      <div class="news-item">
-        <div class="news-num" style="color:var(--surface)">${i}</div>
-        <div class="news-body">
-          <div class="skel" style="width:38%;height:9px;margin-bottom:8px"></div>
-          <div class="skel" style="width:${80 + (i%3)*7}%;height:16px;margin-bottom:6px"></div>
-          <div class="skel" style="width:65%;height:11px"></div>
-        </div>
-      </div>
-    `).join('');
-  }
-  // Links sidebar shows skeleton until ads.php responds
-  const linksList = document.getElementById('links-list');
-  if (linksList) {
-    linksList.innerHTML = `<div style="padding:10px 0">
-      <div class="skel" style="width:90%;margin-bottom:8px"></div>
-      <div class="skel" style="width:70%;margin-bottom:8px"></div>
-      <div class="skel" style="width:80%"></div>
-    </div>`;
-  }
-})();
+// No seed needed — links-list has inline skeleton in HTML
 
 // ══════════════════════════════════════════
 //  HELPERS
@@ -579,28 +550,51 @@ function relTime(ms) {
 // ══════════════════════════════════════════
 //  RSS FETCH
 // ══════════════════════════════════════════
+// Parse raw RSS/Atom XML string into item objects
+function parseRssXml(xmlString) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlString, 'text/xml');
+  // Check for parse error
+  if (doc.querySelector('parsererror')) return null;
+  const entries = [...doc.querySelectorAll('item, entry')];
+  if (!entries.length) return null;
+  return entries.map(el => {
+    const getText = tag => el.querySelector(tag)?.textContent?.trim() || '';
+    const getAttr = (tag, attr) => el.querySelector(tag)?.getAttribute(attr) || '';
+    return {
+      title:       getText('title'),
+      link:        getText('link') || getAttr('link', 'href') || getText('guid'),
+      guid:        getText('guid') || getText('link'),
+      description: getText('description') || getText('summary') || getText('content') || '',
+      pubDate:     getText('pubDate') || getText('published') || getText('updated') || ''
+    };
+  }).filter(i => i.title);
+}
+
 async function fetchViaRss2Json(feedUrl) {
-  try {
-    // Use allorigins proxy — no rate limit, no API key needed
-    const proxyUrl = ALLORIGINS + encodeURIComponent(feedUrl) + '&_=' + Date.now();
-    const r = await fetch(proxyUrl);
-    if (!r.ok) return null;
-    const j = await r.json();
-    if (!j.contents) return null;
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(j.contents, 'text/xml');
-    const entries = [...doc.querySelectorAll('item, entry')];
-    if (!entries.length) return null;
-    return entries.map(el => {
-      const getText = (tag) => el.querySelector(tag)?.textContent?.trim() || '';
-      const getAttr = (tag, attr) => el.querySelector(tag)?.getAttribute(attr) || '';
-      const title = getText('title');
-      const link  = getText('link') || getAttr('link', 'href') || getText('guid');
-      const desc  = getText('description') || getText('summary') || getText('content') || '';
-      const pub   = getText('pubDate') || getText('published') || getText('updated') || '';
-      return { title, link, guid: link, description: desc, pubDate: pub };
-    }).filter(i => i.title);
-  } catch(e) { return null; }
+  // Try each proxy in order
+  for (const makeUrl of CORS_PROXIES) {
+    try {
+      const proxyUrl = makeUrl(feedUrl);
+      const r = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+      if (!r.ok) continue;
+
+      // allorigins wraps in JSON; others return raw XML
+      const contentType = r.headers.get('content-type') || '';
+      let xmlString;
+      if (contentType.includes('application/json')) {
+        const j = await r.json();
+        xmlString = j.contents || j.data || null;
+      } else {
+        xmlString = await r.text();
+      }
+      if (!xmlString) continue;
+
+      const items = parseRssXml(xmlString);
+      if (items && items.length) return items;
+    } catch(e) { /* try next proxy */ }
+  }
+  return null;
 }
 
 function parseItems(items, source, maxAge) {
@@ -651,14 +645,25 @@ function renderLinksDOM(links, isFresh) {
   const list = document.getElementById('links-list');
   if (!list) return;
   if (!links.length) {
-    list.innerHTML = `<p style="font-size:12px;color:var(--text3);padding:10px 0;font-style:italic">No links yet.</p>`;
+    list.innerHTML = `<p style="font-family:var(--body);font-size:13px;color:var(--text3);padding:20px 0;font-style:italic">No links available yet.</p>`;
     return;
   }
-  list.innerHTML = links.map(l => `
-    <div class="link-item">
-      <a href="${esc(l.short_url || l.url)}" target="_blank" rel="noopener" title="${esc(l.url||l.title)}">${esc(l.title)}</a>
-    </div>
-  `).join('');
+  list.innerHTML = links.map((l, i) => {
+    const href  = l.short_url || l.shortUrl || l.url || l.link || '#';
+    const label = l.title || l.name || l.keyword || href;
+    return `
+    <div class="news-item">
+      <div class="news-num">${i+1}</div>
+      <div class="news-body">
+        <a href="${esc(href)}" target="_blank" rel="noopener"
+           style="color:var(--text);text-decoration:none;font-family:var(--body);font-size:14px;font-weight:600;line-height:1.4;display:block"
+           onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text)'">
+          ${esc(label)}
+        </a>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--body)">${esc(href)}</div>
+      </div>
+    </div>`;
+  }).join('');
   const lbl = document.getElementById('links-label-count');
   if (lbl) lbl.textContent = links.length + ' links';
   const sc = document.getElementById('st-lcount');
@@ -744,20 +749,33 @@ function startCountdown() {
 
 async function loadLinks(isFresh) {
   try {
-    const res   = await fetch(LINKS_API + '&_=' + Date.now());
-    const data  = await res.json();
-    const links = data.links || [];
-    if (links.length) renderLinksDOM(links, isFresh);
+    const res = await fetch(LINKS_API + '&_=' + Date.now(), { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) { renderLinksDOM([], false); return; }
+    const data = await res.json();
+    // Handle both {links:[]} and flat array responses
+    const links = Array.isArray(data) ? data : (data.links || data.data || data.items || []);
+    if (links.length) {
+      renderLinksDOM(links, isFresh);
+    } else {
+      renderLinksDOM([], false);
+    }
   } catch(e) {
     console.warn('Links fetch error:', e);
-    // sidebar stays as skeleton — no hardcoded fallback
+    renderLinksDOM([], false);
   }
 }
 
 async function refreshAll(isFresh) {
   const el = document.getElementById('st-updated');
   if (el) el.textContent = new Date().toLocaleTimeString();
-  await Promise.all([loadNews(isFresh), loadLinks(isFresh)]);
+
+  // Show loading state
+  const list = document.getElementById('news-list');
+  if (list && list.querySelectorAll('.news-item').length === 0) {
+    list.innerHTML = `<p style="font-family:var(--body);font-size:13px;color:var(--text3);padding:20px 0;font-style:italic">Loading stories…</p>`;
+  }
+
+  await loadLinks(isFresh);
   startCountdown();
 }
 
